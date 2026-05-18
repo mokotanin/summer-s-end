@@ -1,4 +1,6 @@
-//import UploadBox from "@/components/uploadBox"
+"use client"
+
+import { useRef, useState } from "react"
 import { UploadIcon } from "lucide-react"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle, EmptyMedia } from "@/components/ui/empty"
 import { Button } from "@/components/ui/button"
@@ -16,20 +18,54 @@ export function ImageDemo() {
 }
 
 export function EmptyDemo() {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files) return
+    
+    if (files.length > 2) {
+      alert("2 images max")
+      return
+    }
+
+    // Process files here - you can add state management as needed
+    console.log("Files selected:", files)
+  }
+
   return (
-    <Empty>
-      <EmptyHeader>
-        <EmptyMedia variant="icon">
-          <UploadIcon />
-        </EmptyMedia>
-        <EmptyTitle>No image uploaded</EmptyTitle>
-        <EmptyDescription>You haven&apos;t uploaded any images yet. Get started by uploading your first image.</EmptyDescription>
-      </EmptyHeader>
-      <EmptyContent className="flex-row justify-center gap-2">
-        <Button>What is this?</Button>
-        <Button variant="outline">Import Image</Button>
-      </EmptyContent>
-    </Empty>
+    <>
+      <Empty className="relative mx-auto rounded-lg border max-w-sm">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <UploadIcon />
+          </EmptyMedia>
+          <EmptyTitle>No image uploaded</EmptyTitle>
+          <EmptyDescription>You haven&apos;t uploaded any images yet. Get started by uploading your first image.</EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent className="flex-row justify-center gap-2">
+          <Button>
+            What is this?
+          </Button>
+          <Button variant="outline" onClick={handleImportClick}>
+            Import Image
+          </Button>
+        </EmptyContent>
+      </Empty>
+      
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        hidden
+        onChange={handleFileChange}
+      />
+    </>
   )
 }
 
