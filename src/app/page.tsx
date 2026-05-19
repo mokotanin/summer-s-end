@@ -1,12 +1,14 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { UploadIcon } from "lucide-react"
+import { AlertTriangleIcon, Files, UploadIcon } from "lucide-react"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle, EmptyMedia } from "@/components/ui/empty"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Image from "next/image"
 import rezeImage from "./reze.jpeg"
+import { Alert,AlertDescription,AlertTitle } from "@/components/ui/alert"
+import { motion } from "framer-motion"
 
 export function ImageDemo() {
   return (
@@ -19,6 +21,7 @@ export function ImageDemo() {
 
 export function EmptyDemo() {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [alertMessage, setAlertMessage] = useState<string | null>(null)
 
   const handleImportClick = () => {
     fileInputRef.current?.click()
@@ -29,7 +32,8 @@ export function EmptyDemo() {
     if (!files) return
     
     if (files.length > 2) {
-      alert("2 images max")
+      setAlertMessage("You can only upload up to 2 images at a time.")
+      setTimeout(() => setAlertMessage(null), 3000)
       return
     }
 
@@ -39,6 +43,21 @@ export function EmptyDemo() {
 
   return (
     <>
+      {alertMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 2, y: 0 }}
+          exit={{ opacity: 0, y: -40 }}
+          className="fixed top-4 right-4 z-50"
+        >
+          <Alert variant="destructive">
+            <AlertTriangleIcon className="h-4 w-4" />
+            <AlertTitle>Too many files</AlertTitle>
+            <AlertDescription>{alertMessage}</AlertDescription>
+          </Alert>
+        </motion.div>
+      )}
+      
       <Empty className="relative mx-auto rounded-lg border max-w-sm">
         <EmptyHeader>
           <EmptyMedia variant="icon">
@@ -53,6 +72,9 @@ export function EmptyDemo() {
           </Button>
           <Button variant="outline" onClick={handleImportClick}>
             Import Image
+          </Button>
+          <Button variant="link" disabled={(files.length === 2)}>
+            Create
           </Button>
         </EmptyContent>
       </Empty>
