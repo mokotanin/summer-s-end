@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { AlertTriangleIcon, Image as ImageIcon, UploadIcon } from "lucide-react"
+import { AlertTriangleIcon, Image as ImageIcon, UploadIcon, Check } from "lucide-react"
 import {
   Empty,
   EmptyContent,
@@ -17,6 +17,12 @@ import rezeImage from "./reze.jpeg"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { motion } from "framer-motion"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Spinner } from "@/components/ui/spinner"
 
 function ImageSlot({ file }: { file?: File }) {
   const previewUrl = file ? URL.createObjectURL(file) : null
@@ -73,9 +79,15 @@ export function EmptyDemo({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [alertMessage, setAlertMessage] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleImportClick = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleCreateClick = () => {
+    setIsLoading(true)
+    // Add your creation logic here
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,20 +133,57 @@ export function EmptyDemo({
       <Empty className="relative mx-auto max-w-sm rounded-lg border">
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <UploadIcon />
+            {selectedFiles.length === 0 ? <UploadIcon /> : <Check />}
           </EmptyMedia>
-          <EmptyTitle>No image uploaded</EmptyTitle>
+          <EmptyTitle>
+            {selectedFiles.length === 0
+              ? "No images uploaded"
+              : `${selectedFiles.length} image${selectedFiles.length > 1 ? "s" : ""} selected`
+            }
+          </EmptyTitle>
           <EmptyDescription>
-            You haven&apos;t uploaded any images yet. Get started by uploading your first image.
+            {selectedFiles.length === 0
+              ? "Upload 2 images to create the album cover."
+              : ""
+            }
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent className="flex-row justify-center gap-2">
-          <Button>What is this?</Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button>
+                What is this?
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <p>
+                The only purpose of this site is to recreate the{" "}
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <span className="underline">-summer&apos;s end-</span>
+                  </HoverCardTrigger>
+                  <HoverCardContent side="top" className="w-fit">
+                    <div className="text-sm">
+                      CHAINSAW MAN THE MOVIE: REZE ARC original soundtrack -summer&apos;s end- by kensuke ushio
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+                &apos;s album cover.
+              </p>
+            </PopoverContent>
+          </Popover>
           <Button variant="outline" onClick={handleImportClick}>
             Import Image
           </Button>
-          <Button variant="secondary" disabled={selectedFiles.length !== 2}>
-            Create
+          <Button
+            variant="secondary"
+            disabled={selectedFiles.length !== 2 || isLoading}
+            onClick={handleCreateClick}
+          >
+            {isLoading ? (
+              <Spinner className="animate-spin" />
+            ) : null}
+            {selectedFiles.length === 2 ? "Create" : "Create"}
           </Button>
         </EmptyContent>
       </Empty>
@@ -156,7 +205,7 @@ export default function Page() {
 
   return (
     <main className="space-y-6 p-6">
-      <div className="relative mx-auto w-full max-w-sm">
+      <div className="relative mx-auto max-w-sm">
         <ImageDemo />
         <HoverCard openDelay={10} closeDelay={100}>
           <HoverCardTrigger asChild>
@@ -164,7 +213,7 @@ export default function Page() {
               <Image1 file={selectedFiles[0]} />
             </div>
           </HoverCardTrigger>
-          <HoverCardContent side="right" align="start">
+          <HoverCardContent side="right" align="start" className="flex w-fit flex-col gap-0.5">
             <p>Image 1</p>
           </HoverCardContent>
         </HoverCard>
@@ -174,7 +223,7 @@ export default function Page() {
               <Image2 file={selectedFiles[1]} />
             </div>
           </HoverCardTrigger>
-          <HoverCardContent side="right" align="start">
+          <HoverCardContent side="right" align="start" className="flex w-fit flex-col gap-0.5">
             <p>Image 2</p>
           </HoverCardContent>
         </HoverCard>
