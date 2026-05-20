@@ -21,6 +21,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Spinner } from "@/components/ui/spinner"
 //import { AppleSwitch } from "@/components/unlumen-ui/apple-switch"
 import { Slider } from "@/components/ui/slider"
+import Link from "next/link"
 
 {/* static dimensions */ }
 const OUTPUT_WIDTH = 2560
@@ -177,17 +178,19 @@ function ImageSlot({ file }: { file?: File }) {
 {/* example image */ }
 export function ImageDemo() {
   return (
-    <Card className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden p-0">
-      <div className="absolute inset-0 z-10 bg-black/35" />
-      <Image
-        loading="eager"
-        src={rezeImage}
-        alt="-Summer's End-"
-        fill
-        sizes="(max-width: 640px) 100vw, 384px"
-        className="relative z-0 object-cover"
-      />
-    </Card>
+    <Link href="/c-est-fini" aria-label="Open the example page" className="block">
+      <Card className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden p-0 transition-transform duration-200 hover:scale-[1.01]">
+        <div className="absolute inset-0 z-10 bg-black/35" />
+        <Image
+          loading="eager"
+          src={rezeImage}
+          alt="-Summer's End-"
+          fill
+          sizes="(max-width: 640px) 100vw, 384px"
+          className="relative z-0 object-cover"
+        />
+      </Card>
+    </Link>
   )
 }
 
