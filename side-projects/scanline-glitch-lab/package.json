@@ -1,0 +1,9 @@
+{
+  "name": "scanline-glitch-lab",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Standalone testbed for horizontal scanline glitch effects",
+  "scripts": {
+    "dev": "node server.js"
+  }
+}

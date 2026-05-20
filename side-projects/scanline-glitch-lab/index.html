@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Strip Interleave Lab</title>
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+
+    <body>
+        <main class="layout">
+            <section class="panel stage-panel">
+                <div class="canvas-wrap">
+                    <canvas id="glitchCanvas" width="768" height="768"></canvas>
+                </div>
+            </section>
+
+            <section class="panel controls-panel">
+                <h1>Strip Interleave Lab</h1>
+                <p class="subtle">Upload two images (best at 2560x1280), then merge them by alternating horizontal
+                    strips into a 2560x2560 output.</p>
+
+                <label class="control">
+                    <span>Image A</span>
+                    <input id="imageAInput" type="file" accept="image/*" />
+                </label>
+
+                <label class="control">
+                    <span>Image B</span>
+                    <input id="imageBInput" type="file" accept="image/*" />
+                </label>
+
+                <label class="control">
+                    <span>Strip Height (px)</span>
+                    <input id="stripHeight" type="range" min="1" max="64" value="8" />
+                </label>
+
+                <p class="subtle" id="stripLabel">Current strip height: 8px</p>
+                <p class="subtle" id="status">Waiting for two images...</p>
+
+                <div class="actions">
+                    <button id="mergeNow">Merge Now</button>
+                    <button id="download">Download PNG</button>
+                </div>
+            </section>
+        </main>
+
+        <script src="./script.js"></script>
+    </body>
+
+</html>
