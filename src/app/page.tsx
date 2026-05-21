@@ -534,25 +534,6 @@ export default function Page() {
             <p>Image 2</p>
           </HoverCardContent>
         </HoverCard>
-        <HoverCard openDelay={10} closeDelay={50}>
-          <HoverCardTrigger asChild>
-            {/*<AppleSwitch
-              className="absolute top-40 -left-18"
-              onCheckedChange={setEnabled}
-              size="sm"
-              defaultChecked={true}
-              checked={enabled}
-            />*/}
-          </HoverCardTrigger>
-          <HoverCardContent
-            side="bottom"
-            sideOffset={5}
-            align="center"
-            className="flex w-fit flex-col"
-          >
-            <p>Show merged preview</p>
-          </HoverCardContent>
-        </HoverCard>
       </div>
       {errorMessage ? (
         <Alert variant="destructive" className="mx-auto max-w-sm">
